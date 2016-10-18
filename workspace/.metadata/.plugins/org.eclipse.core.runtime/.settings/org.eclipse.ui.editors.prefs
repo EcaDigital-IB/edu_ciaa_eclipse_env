@@ -1,0 +1,15 @@
+coverage_stylePreferences=NONE
+coverage_text=false
+eclipse.preferences.version=1
+errorIndication=false
+errorTextStyle=NONE
+highlight.text.style=NONE
+nocoverage_stylePreferences=NONE
+nocoverage_text=false
+org.eclipse.cdt.ui.occurrenceIndicationColor=61,61,173
+org.eclipse.cdt.ui.writeOccurrenceIndicationColor=29,135,169
+overviewRuler_migration=migrated_3.1
+thcoverage_stylePreferences=NONE
+thcoverage_text=false
+warningIndication=false
+warningTextStyle=NONE

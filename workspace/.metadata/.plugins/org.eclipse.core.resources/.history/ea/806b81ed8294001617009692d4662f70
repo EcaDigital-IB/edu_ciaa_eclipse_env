@@ -1,0 +1,118 @@
+/*
+ * buttons.c
+ *
+ *  Created on: Oct 14, 2016
+ *      Author: l_vis
+ */
+
+#include "buttons.h"
+
+bool _fDebInit = false;
+
+uint32_t _debT = BUTTONS_DEF_DEB_T;
+
+uint32_t _oldT = 0;
+
+/* initialize board's buttons driver */
+void Buttons_Init(void) {
+
+	int i;
+
+	for (i = 0; i < sizeof(_gpioSWBits) / sizeof(_gpioSWBits[0]); ++i) {
+
+		Chip_SCU_PinMuxSet(_gpioSWBits[i].mux.pingrp, _gpioSWBits[i].mux.pinnum,
+				(_gpioSWBits[i].mux.modefunc | SCU_MODE_PULLUP
+						| SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS));
+
+		Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, _gpioSWBits[i].io.port,
+				_gpioSWBits[i].io.pin);
+
+	}
+}
+
+/** initialize board's buttons driver with debounce
+ *
+ * @param debT: stabilization period in ms
+ * @param currentT: current time in ms
+ */
+void Buttons_InitDeb(uint32_t debT, uint32_t currentT) {
+
+	Buttons_Init();
+
+	_fDebInit = true;
+
+	_oldT = currentT;
+
+	Buttons_SetDebT(debT);
+
+}
+
+/** Debounce stabilization period setter
+ *
+ * @param debT: stabilization period in ms
+ */
+void Buttons_SetDebT(uint32_t debT) {
+
+	_debT = debT;
+
+}
+
+/** Polls all buttons without deboucing
+ *
+ * @return raw button states masked byte (masks: BUTTONS_SW[n])
+ */
+uint8_t Buttons_PollAll(void) {
+
+	uint8_t ret = NO_BUTTON_PRESSED;
+	if (Chip_GPIO_GetPinState(LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM,
+			BUTTONS_BUTTON1_GPIO_BIT_NUM) == 0) {
+		ret |= BUTTONS_BUTTON1;
+	}
+	return ret;
+
+	return false;
+	return 0;
+}
+
+/** Polls button without deboucing
+ *
+ * @param buttonMask: button's byte mask
+ * @return button's raw state (true if pressed false otherwise)
+ */
+bool Buttons_Poll(uint8_t buttonMask) {
+
+	uint8_t ret = NO_BUTTON_PRESSED;
+	if (Chip_GPIO_GetPinState(LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM,
+			BUTTONS_BUTTON1_GPIO_BIT_NUM) == 0) {
+		ret |= BUTTONS_BUTTON1;
+	}
+	return ret;
+
+	return false;
+}
+
+/** Polls all buttons with deboucing
+ *
+ * @param currentT: current time in ms
+ * @return debounced button states masked byte (masks: BUTTONS_SW[n])
+ */
+uint8_t Buttons_PollDebAll(uint32_t currentT) {
+
+	if (!_fDebInit)
+		return 255;
+
+}
+
+/** Polls button with deboucing
+ *
+ * @param buttonMask: button's byte mask
+ * @param currentT: current time in ms
+ * @return button's debounced state (true if pressed false otherwise)
+ */
+bool Buttons_PollDeb(uint8_t buttonMask, uint32_t currentT) {
+
+	if (!_fDebInit)
+		return false;
+
+}
+

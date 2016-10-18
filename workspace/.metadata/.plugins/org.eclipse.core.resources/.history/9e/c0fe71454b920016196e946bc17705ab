@@ -1,0 +1,127 @@
+/*
+ * buttons.h
+ *
+ *  Created on: Oct 14, 2016
+ *      Author: l_vis
+ */
+
+#ifndef PROGRAM_PERIPH_BLINKY_INC_BUTTONS_H_
+#define PROGRAM_PERIPH_BLINKY_INC_BUTTONS_H_
+
+#include <stdint.h>
+#include <stdbool.h>
+
+#define BUTTONS_DEF_DEB_T 200 // [ms]
+
+#define BUTTONS_SW1 = 0;
+#define BUTTONS_SW2 = 1;
+#define BUTTONS_SW3 = 2;
+#define BUTTONS_SW4 = 3;
+
+/* GPIO Port structures*/
+typedef struct {
+	uint8_t port;
+	uint8_t pin;
+} mux_port_t;
+
+typedef struct {
+	uint8_t port;
+	uint8_t pin;
+} io_port_t;
+
+typedef struct {
+	mux_port_t mux;
+	io_port_t io;
+} gpio_port_t;
+
+/* Buttons' GPIO Port structure array*/
+static const gpio_port_t _gpioSWBits[] = { {.mux = {1, 0}, .io = {0, 4}},
+	{	.mux = {1, 1}, .io = {0, 8}},
+	{	.mux = {1, 2}, .io = {0, 9}},
+	{	.mux = {1, 6}, .io = {1, 9}}};
+//*****************************************************************************
+//
+// Defines for the hardware resources used by the pushbuttons.
+//
+// The switches are on the following ports/pins:
+//
+// PM0 - Up
+// PM1 - Down
+// PM2 - Left
+// PM3 - Right
+// PM4 - Select/Wake
+//
+// The switches tie the GPIO to ground, so the GPIOs need to be configured
+// with pull-ups, and a value of 0 means the switch is pressed.
+//
+//*****************************************************************************
+#define BUTTONS_GPIO_PERIPH     SYSCTL_PERIPH_GPIOM
+#define BUTTONS_GPIO_BASE       GPIO_PORTM_BASE
+
+#define NUM_BUTTONS             5
+#define UP_BUTTON               GPIO_PIN_0
+#define DOWN_BUTTON             GPIO_PIN_1
+#define LEFT_BUTTON             GPIO_PIN_2
+#define RIGHT_BUTTON            GPIO_PIN_3
+#define SELECT_BUTTON           GPIO_PIN_4
+
+#define ALL_BUTTONS             (LEFT_BUTTON | RIGHT_BUTTON | UP_BUTTON |     \
+                                 DOWN_BUTTON | SELECT_BUTTON)
+
+//*****************************************************************************
+//
+// Useful macros for detecting button events.
+//
+//*****************************************************************************
+#define BUTTON_PRESSED(button, buttons, changed)                              \
+        (((button) & (changed)) && ((button) & (buttons)))
+
+#define BUTTON_RELEASED(button, buttons, changed)                             \
+        (((button) & (changed)) && !((button) & (buttons)))
+
+/* initialize board's buttons driver */
+void Buttons_Init(void);
+
+/** initialize board's buttons driver with debounce
+ *
+ * @param debT: stabilization period in ms
+ * @param currentT: current time in ms
+ */
+void Buttons_InitDeb(uint32_t debT, uint32_t currentT);
+
+/** Debounce stabilization period setter
+ *
+ * @param debT: stabilization period in ms
+ */
+void Buttons_SetDebT(uint32_t debT);
+
+/** Polls all buttons without deboucing
+ *
+ * @param currentT: current time in ms
+ * @return raw button states masked byte (masks: BUTTONS_SW[n])
+ */
+uint8_t Buttons_PollAll(void);
+
+/** Polls button without deboucing
+ *
+ * @param buttonMask: button's byte mask
+ * @return button's raw state (true if pressed false otherwise)
+ */
+bool Buttons_Poll(uint8_t buttonMask);
+
+/** Polls all buttons with deboucing
+ *
+ * @param currentT: current time in ms
+ * @return debounced button states masked byte (masks: BUTTONS_SW[n])
+ */
+uint8_t Buttons_PollDebAll(uint32_t currentT);
+
+/** Polls button with deboucing
+ *
+ * @param buttonMask: button's byte mask
+ * @param currentT: current time in ms
+ * @return button's debounced state (true if pressed false otherwise)
+ */
+bool Buttons_PollDeb(uint8_t buttonMask, uint32_t currentT);
+
+#endif /* PROGRAM_PERIPH_BLINKY_INC_BUTTONS_H_ */
