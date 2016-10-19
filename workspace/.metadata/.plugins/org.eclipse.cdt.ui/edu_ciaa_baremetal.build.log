@@ -1,0 +1,6 @@
+11:31:36 **** Incremental Build of configuration Default for project edu_ciaa_baremetal ****
+make all 
+make: Nothing to be done for 'all'.
+
+11:31:37 Build Finished (took 203ms)
+

@@ -1,2 +1,4 @@
-GitRepositoriesView.GitDirectories=/home/l_vis/edu_ciaa/Firmware-0.5.0/.git\:
+GitRepositoriesView.GitDirectories=/home/l_vis/edu_ciaa_env/WorkspaceGit/libs_edu_ciaa_baremetal/.git\:
+GitRepositoriesView.GitDirectories.relative=libs_edu_ciaa_baremetal/.git\:
+core_defaultRepositoryDir=${workspace_loc}
 eclipse.preferences.version=1

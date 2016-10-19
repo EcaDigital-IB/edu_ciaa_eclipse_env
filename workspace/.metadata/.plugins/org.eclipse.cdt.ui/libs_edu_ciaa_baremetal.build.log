@@ -1,0 +1,11 @@
+10:58:28 **** Incremental Build of configuration Default for project libs_edu_ciaa_baremetal ****
+make all 
+CC program/periph_blinky/src/systick.c
+LD program.elf
+copy from `program.elf' [elf32-littlearm] to `program.bin' [binary]
+Executable SIZE:
+   text	   data	    bss	    dec	    hex	filename
+  12740	     64	    128	  12932	   3284	program.elf
+
+10:58:29 Build Finished (took 1s.308ms)
+
