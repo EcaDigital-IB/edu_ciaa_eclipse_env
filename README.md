@@ -9,7 +9,7 @@ Jerarquia de archivos prearmada para programar la edu-ciaa en Eclipse
 
 - Descargar gcc-arm-none-eabi de https://launchpad.net/gcc-arm-embedded/+download
 
-- instalar en ./gcc-arm-none-eabi/
+instalar en ./gcc-arm-none-eabi/
 
 - Descargar Eclipse Luna IDE For C/C++ Developers de https://eclipse.org/downloads/packages/eclipse-ide-cc-developers/lunasr2
 
